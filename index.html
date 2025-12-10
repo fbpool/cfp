@@ -103,7 +103,7 @@ h1 {
     text-align: center;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="email"], input[type="number"] {
     padding: 8px;
     width: 220px;
     margin: 5px;
@@ -126,6 +126,8 @@ button {
 <body>
 
 <h1>1st Annual 2025 College Playoff Bracket</h1>
+<p>Pick the winner of each game. The most correct responses wins. $20 per sheet and you can play as many sheets as you like. Payouts will be determined based on the number of people in the pool. Payments can be sent to:
+ Venmo @dan-giusti | Apple Pay 617-312-8199 | Cashapp namg81<br><br>
 
 <div class="bracket-container">
 
@@ -208,6 +210,8 @@ button {
 
 <!-- FORM -->
 <div class="form-container">
+    <input type="number" id="TP" placeholder="Championship Total Points" min="0" max="999" />
+    <br/>
     <input type="text" id="name" placeholder="Name" />
     <input type="email" id="email" placeholder="Email" />
     <br/>
@@ -383,14 +387,15 @@ function updateValidationMessage() {
         }
     });
 
+    const tp = document.getElementById("TP").value.trim();
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
-    if (!name || !email) valid = false;
+    if (!tp || !name || !email) valid = false;
 
     if (!valid) {
         let msg = "";
         if (missingGames.length > 0) msg += "Please select winners for all games. ";
-        if (!name || !email) msg += "Please fill out both Name and Email.";
+        if (!tp || !name || !email) msg += "Please enter Total Points, Name, and Email.";
         validationMessage.textContent = msg;
     } else {
         validationMessage.style.color = "green";
@@ -398,51 +403,105 @@ function updateValidationMessage() {
     }
 }
 
+// Google Form entry IDs
+const entryIDs = {
+    "name": "257403214",
+    "email": "710747034",
+    "R1G1": "3192731",
+    "R1G2": "228298947",
+    "R1G3": "211151388",
+    "R1G4": "1001170552",
+    "QF1": "1411199850",
+    "QF2": "367488223",
+    "QF3": "802216188",
+    "QF4": "7428646",
+    "SF1": "29966834",
+    "SF2": "1434513780",
+    "CH": "111311380",
+    "TP": "1824678700"
+};
+
+// Remove this line because it's already declared earlier:
+// let triedSubmit = false;
+
+let lastSubmissionData = null; // NEW: track last submission
+
 async function validateAndSubmit() {
-    triedSubmit = true;
+    triedSubmit = true; // reuse existing variable
     updateValidationMessage();
     const validationMessage = document.getElementById("validationMessage");
+    const submitButton = document.querySelector("button");
 
     if (validationMessage.style.color !== "green") return;
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
+    const tp = document.getElementById("TP").value.trim();
 
-    const submission = {
-        name,
-        email,
-        winners
+    // Prepare current submission data
+    const currentData = {
+        name: name,
+        email: email,
+        tp: tp,
+        winners: { ...winners }
     };
 
-    // Google Web App URL
-    const endpoint = "https://script.google.com/macros/s/AKfycbwNaL0QM8eaI4VGmLIo6IssOCyI7u_zw_kRCHbk-jqPn8C9RXEivg3aPmq1oalxLnW9/exec";
+    // Check if nothing changed since last submission
+    if (lastSubmissionData && JSON.stringify(currentData) === JSON.stringify(lastSubmissionData)) {
+        validationMessage.style.color = "orange";
+        validationMessage.textContent = "Already submitted. Make changes to submit again.";
+        return;
+    }
+
+    // Construct payload for Google Form
+    const formPayload = {
+        [`entry.${entryIDs.name}`]: name,
+        [`entry.${entryIDs.email}`]: email,
+        [`entry.${entryIDs.TP}`]: tp
+    };
+
+    for (const [game, winner] of Object.entries(winners)) {
+        if (entryIDs[game]) {
+            formPayload[`entry.${entryIDs[game]}`] = winner;
+        }
+    }
+
+    const googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSe6ak-5Hl4Cui5nGmhZWNtipwdP2OpskMtST3lH_d-rNDylqw/formResponse";
 
     try {
-        const response = await fetch(endpoint, {
+        await fetch(googleFormURL, {
             method: "POST",
-            redirect: "follow",
-            body: JSON.stringify(submission),
-            headers: {"Content-Type": "application/json"}
+            mode: "no-cors",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formPayload)
         });
 
-        const result = await response.json();
-
-        if (result.status === "success") {
-            validationMessage.style.color = "green";
-            validationMessage.textContent = "Submission received! Good luck!";
-        } else {
-            throw new Error("Unexpected response");
-        }
+        lastSubmissionData = currentData; // save last submission
+        validationMessage.style.color = "green";
+        validationMessage.textContent = "Submission sent! Good luck!";
+        submitButton.disabled = true; // disable until changes
     } catch (err) {
         validationMessage.style.color = "red";
-        validationMessage.textContent = "Submission failed. Please try again later.";
+        validationMessage.textContent = "Failed to submit. Try again.";
         console.error(err);
     }
 }
 
+// Re-enable submit button if any change occurs
+["TP","name","email"].forEach(id => {
+    document.getElementById(id).addEventListener("input", () => {
+        document.querySelector("button").disabled = false;
+        document.getElementById("validationMessage").textContent = "";
+    });
+});
 
-renderBracket();
+document.querySelectorAll(".team").forEach(teamEl => {
+    teamEl.addEventListener("click", () => {
+        document.querySelector("button").disabled = false;
+        document.getElementById("validationMessage").textContent = "";
+    });
+});
+
 </script>
-
 </body>
 </html>
