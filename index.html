@@ -20,7 +20,9 @@ h1 {
     display: grid;
     grid-template-columns: repeat(4, 240px);
     gap: 40px;
-    justify-content: center;
+    justify-content: start; /* align to left */
+    overflow-x: auto;       /* allow horizontal scrolling on small screens */
+    padding-bottom: 20px;   /* optional, adds some space for scroll */
 }
 
 /* Headings row */
