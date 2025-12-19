@@ -143,44 +143,54 @@ button {
   </div>
 
   <!-- ROUND 1 -->
-  <div class="round">
-      <div class="game" data-game="R1G1">
-          <div class="team" onclick="selectTeam('R1G1','Oregon')">#5 Oregon</div>
-          <div class="team" onclick="selectTeam('R1G1','James Madison')">#12 James Madison</div>
-      </div>
-      <div class="game" data-game="R1G2">
-          <div class="team" onclick="selectTeam('R1G2','Ole Miss')">#6 Ole Miss</div>
-          <div class="team" onclick="selectTeam('R1G2','Tulane')">#11 Tulane</div>
-      </div>
-      <div class="game" data-game="R1G3">
-          <div class="team" onclick="selectTeam('R1G3','Texas A&M')">#7 Texas A&M</div>
-          <div class="team" onclick="selectTeam('R1G3','Miami')">#10 Miami</div>
-      </div>
-      <div class="game" data-game="R1G4">
-          <div class="team" onclick="selectTeam('R1G4','Oklahoma')">#8 Oklahoma</div>
-          <div class="team" onclick="selectTeam('R1G4','Alabama')">#9 Alabama</div>
-      </div>
-  </div>
+	<div class="round">
+		<div class="game" data-game="R1G1">
+			<div class="team" onclick="selectTeam('R1G1','Oregon')">#5 Oregon</div>
+			<div class="team" onclick="selectTeam('R1G1','James Madison')">#12 James Madison</div>
+		</div>
+	
+		<!-- Oklahoma vs Alabama is now R1G2 -->
+		<div class="game" data-game="R1G2">
+			<div class="team" onclick="selectTeam('R1G2','Oklahoma')">#8 Oklahoma</div>
+			<div class="team" onclick="selectTeam('R1G2','Alabama')">#9 Alabama</div>
+		</div>
+	
+		<div class="game" data-game="R1G3">
+			<div class="team" onclick="selectTeam('R1G3','Ole Miss')">#6 Ole Miss</div>
+			<div class="team" onclick="selectTeam('R1G3','Tulane')">#11 Tulane</div>
+		</div>
+	
+		<div class="game" data-game="R1G4">
+			<div class="team" onclick="selectTeam('R1G4','Texas A&M')">#7 Texas A&M</div>
+			<div class="team" onclick="selectTeam('R1G4','Miami')">#10 Miami</div>
+		</div>
+	</div>
+
 
   <!-- QUARTERFINALS -->
-  <div class="round">
-      <div class="game" data-game="QF1">
-          <div class="team" id="QF1T1" onclick="selectTeam('QF1', getWinnerName('R1G1'))"></div>
-          <div class="team" onclick="selectTeam('QF1','Texas Tech')">#4 Texas Tech</div>
-      </div>
-      <div class="game" data-game="QF2">
-          <div class="team" id="QF2T1" onclick="selectTeam('QF2', getWinnerName('R1G2'))"></div>
-          <div class="team" onclick="selectTeam('QF2','Georgia')">#3 Georgia</div>
-      </div>
-      <div class="game" data-game="QF3">
-          <div class="team" id="QF3T1" onclick="selectTeam('QF3', getWinnerName('R1G3'))"></div>
-          <div class="team" onclick="selectTeam('QF3','Ohio State')">#2 Ohio State</div>
-      </div>
-      <div class="game" data-game="QF4">
-          <div class="team" id="QF4T1" onclick="selectTeam('QF4', getWinnerName('R1G4'))"></div>
-          <div class="team" onclick="selectTeam('QF4','Indiana')">#1 Indiana</div>
-      </div>
-  </div>
+	<div class="round">
+		<div class="game" data-game="QF1">
+			<div class="team" id="QF1T1" onclick="selectTeam('QF1', getWinnerName('R1G1'))"></div>
+			<div class="team" onclick="selectTeam('QF1','Texas Tech')">#4 Texas Tech</div>
+		</div>
+	
+		<!-- Indiana game is now QF2 -->
+		<div class="game" data-game="QF2">
+			<div class="team" id="QF2T1" onclick="selectTeam('QF2', getWinnerName('R1G2'))"></div>
+			<div class="team" onclick="selectTeam('QF2','Indiana')">#1 Indiana</div>
+		</div>
+	
+		<div class="game" data-game="QF3">
+			<div class="team" id="QF3T1" onclick="selectTeam('QF3', getWinnerName('R1G3'))"></div>
+			<div class="team" onclick="selectTeam('QF3','Georgia')">#3 Georgia</div>
+		</div>
+	
+		<div class="game" data-game="QF4">
+			<div class="team" id="QF4T1" onclick="selectTeam('QF4', getWinnerName('R1G4'))"></div>
+			<div class="team" onclick="selectTeam('QF4','Ohio State')">#2 Ohio State</div>
+		</div>
+	</div>
+
 
   <!-- SEMIFINALS -->
   <div class="round">
